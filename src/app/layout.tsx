@@ -22,7 +22,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
-      <body className={inter.className && poppins.className}>{children}</body>
+      <body className={inter.className}>{children}</body>
     </html>
   )
 }

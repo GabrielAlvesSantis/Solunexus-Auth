@@ -7,7 +7,7 @@ export default function Home() {
       <div className="flex flex-col justify-center items-center w-full max-h-full gap-5">
           <div>
             <h1 className="lg:text-4xl md:text-3xl text-center font-bold font-sans">Redefinição de senha</h1>
-            <p className="text-md  text-center font-sans">Digite seu e-mail para redefinir sua senha</p>
+            <p className="text-lg text-center font-sans">Digite seu e-mail para redefinir sua senha</p>
             <form className="flex flex-col gap-5 mt-5">
               <input className="p-2 rounded-md border border-gray-400 text-black font-sans" type="text" placeholder="E-mail" />
               <button className="p-2 rounded-md bg-green-500 text-white font-medium font-sans" type="submit">Enviar</button>

@@ -1,16 +1,20 @@
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import Image from "next/image"
+
 export default function Home() {
   return (
    <div className="grid lg:grid-cols-2  md:grid-cols-1 min-h-screen">
-      <div className="flex flex-col justify-center items-center w-full max-h-full bg-slate-950">
-        <h1 className="text-4xl  font-bold font-sans">Solunexus</h1>
+      <div className="flex flex-col justify-center items-center w-full max-h-full bg-gray-100">
+        <Image src="/Logo_Solunexus.png" width={"800"} height={"800"} alt="Solunexus" draggable="false" />
       </div>
-      <div className="flex flex-col justify-center items-center w-full max-h-full gap-5">
+      <div className="flex flex-col justify-center items-center w-full max-h-full gap-5 bg-gray-50">
           <div>
-            <h1 className="lg:text-4xl md:text-3xl text-center font-bold font-sans">Redefinição de senha</h1>
-            <p className="text-lg text-center font-sans">Digite seu e-mail para redefinir sua senha</p>
+            <h2 className="scroll-m-20 pb-2 text-3xl text-center font-semibold tracking-tight transition-colors">Redefinição de senha</h2>
+            <p className="leading-7 [&:not(:first-child)]">Digite seu e-mail para redefinir sua senha</p>
             <form className="flex flex-col gap-5 mt-5">
-              <input className="p-2 rounded-md border border-gray-400 text-black font-sans" type="text" placeholder="E-mail" />
-              <button className="p-2 rounded-md bg-green-500 text-white font-medium font-sans" type="submit">Enviar</button>
+              <Input type="email" className="border-gray-400" />
+              <Button className="p-2 rounded-md bg-green-700 hover:bg-green-600 text-white font-medium font-sans" type="submit">Enviar</Button>
             </form>
           </div>
       </div>

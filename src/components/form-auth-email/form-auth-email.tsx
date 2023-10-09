@@ -5,19 +5,26 @@ import React from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { emailSchema } from "@/app/validators/auth-email-validator";
+import { emailSchema } from "@/validators/auth-email-validator";
 
 import { CircleIcon } from "@radix-ui/react-icons";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
-import { toast } from "@/components/ui/use-toast";
-import { ToastAction } from "@/components/ui/toast";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { ToastAction } from "@/components/ui/toast"
+import { useToast } from "@/components/ui/use-toast"
+
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 export default function FormAuthEmail() {
 
-  const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  const supabase =  createClientComponentClient();
 
+
+  const { toast } = useToast()
+
+  const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  
   const form = useForm<z.infer<typeof emailSchema>>({
     resolver: zodResolver(emailSchema),
     defaultValues: {
@@ -25,43 +32,66 @@ export default function FormAuthEmail() {
     },
   })
 
-  const {reset} = form;
+  const { reset } = form;
 
   async function onSubmit(values: z.infer<typeof emailSchema>) {
     setIsLoading(true)
-
     try {
-      const response = await fetch("/api/auth/forgot-password", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
+      const { error,data } = await supabase.auth.resetPasswordForEmail(values.email, {
+        redirectTo: 'http://localhost:3000/sendemail/changepassword',
       })
 
-      console.log(values)
-
-      if (response.ok) {
-        reset({
-          email: "",
+      if (data) {
+        toast ({
+          title: "Atenção",
+          variant: "default",
+          description: "E-mail enviado com sucesso!",
+          duration: 6000,
+          action: (
+            <ToastAction altText="Obrigado" className="bg-white text-sans">Obrigado!</ToastAction>
+          ),
         })
-      } 
+        reset()
+        setIsLoading(false)
+      }
 
-      console.log(response)
+      if (!error) {
+        toast ({
+          title: "Atenção",
+          variant: "default",
+          description: "E-mail enviado com sucesso!",
+          duration: 6000,
+          action: (
+            <ToastAction altText="Obrigado" className="bg-white text-sans">Obrigado!</ToastAction>
+          ),
+        })
+        reset()
+        setIsLoading(false)
+      }
+
+      if (error) {
+        toast ({
+          title: "Atenção",
+          variant: "destructive",
+          description: `${error}`,
+          duration: 6000,
+          action: (
+            <ToastAction altText="Obrigado" className="bg-white text-sans">Obrigado!</ToastAction>
+          ),
+        })
+      }
+
     } catch (error) {
-      toast({
-        title: "Sistema ",
-        description: `${error}`,
+      toast ({
+        title: "Atenção",
         variant: "destructive",
+        description: `${error}`,
         duration: 6000,
-        action: <ToastAction altText="Obrigado">Obrigado</ToastAction>,
-      });
+        action: (
+          <ToastAction altText="Obrigado" className="bg-white text-sans">Obrigado!</ToastAction>
+        ),
+      })
     }
-
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 3000)
-
   }
 
   return (
@@ -79,6 +109,7 @@ export default function FormAuthEmail() {
                 <FormControl>
                   <Input {...field} id="email" type="email" disabled={isLoading} />
                 </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -86,7 +117,7 @@ export default function FormAuthEmail() {
             {isLoading ? (
               <CircleIcon className="mr-2 h-4 w-4 animate-spin" />
             ) : ("Enviar")}
-        </Button>
+          </Button>
         </form>
       </Form>
     </div>

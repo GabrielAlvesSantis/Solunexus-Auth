@@ -41,6 +41,10 @@ export default function FormAuthEmail() {
         redirectTo: `${process.env.NEXT_PUBLIC_URL}/changepassword`,
       })
 
+      const messageError = error?.message
+
+      console.log(messageError)
+
       if (data) {
         toast ({
           title: "Atenção",
@@ -67,9 +71,19 @@ export default function FormAuthEmail() {
         })
         reset()
         setIsLoading(false)
-      }
-
-      if (error) {
+      } else if (messageError === 'For security purposes, you can only request this once every 60 seconds') {
+        toast ({
+          title: "Atenção",
+          variant: "destructive",
+          description: "Você só pode solicitar isso uma vez a cada 60 segundos",
+          duration: 6000,
+          action: (
+            <ToastAction altText="Obrigado" className="bg-white text-sans">Obrigado!</ToastAction>
+          ),
+        })
+        reset()
+        setIsLoading(false)
+      } else if (error) {
         toast ({
           title: "Atenção",
           variant: "destructive",
@@ -79,6 +93,8 @@ export default function FormAuthEmail() {
             <ToastAction altText="Obrigado" className="bg-white text-sans">Obrigado!</ToastAction>
           ),
         })
+        reset()
+        setIsLoading(false)
       }
 
     } catch (error) {

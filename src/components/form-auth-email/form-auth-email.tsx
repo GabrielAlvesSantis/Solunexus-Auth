@@ -20,7 +20,6 @@ export default function FormAuthEmail() {
 
   const supabase =  createClientComponentClient();
 
-
   const { toast } = useToast()
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
@@ -42,8 +41,6 @@ export default function FormAuthEmail() {
       })
 
       const messageError = error?.message
-
-      console.log(messageError)
 
       if (data) {
         toast ({

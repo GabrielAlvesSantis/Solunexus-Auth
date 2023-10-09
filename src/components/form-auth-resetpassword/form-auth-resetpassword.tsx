@@ -43,8 +43,6 @@ export default function FormAuthPassword() {
     const { error } = await supabase.auth.updateUser({password: values.passwordConfirmation})
 
     const messageError = error?.message
-    
-    console.log(messageError)
 
     if(!error) {
       toast ({

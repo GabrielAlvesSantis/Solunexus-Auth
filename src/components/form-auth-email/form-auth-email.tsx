@@ -38,7 +38,7 @@ export default function FormAuthEmail() {
     setIsLoading(true)
     try {
       const { error,data } = await supabase.auth.resetPasswordForEmail(values.email, {
-        redirectTo: 'http://localhost:3000/sendemail/changepassword',
+        redirectTo: `${process.env.NEXT_PUBLIC_URL}/changepassword`,
       })
 
       if (data) {
